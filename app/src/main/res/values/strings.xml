@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">J2Sky</string>
+    <string name="app_name">MyProfile</string>
+    <string name="valid_usernameorpwd">Please enter valid Username/Password</string>
+    <string name="valid_username">Please enter valid Username</string>
+    <string name="valid_password">Please enter valid password</string>
+    <string name="password_retype_notmatched">Password/Re-type password not matched </string>
 </resources>

@@ -35,8 +35,8 @@ public class Cognito {
     //private String clientSecret = "7s4234t8hmp27gtig2f54nn138rv28htmc0gu6c31nlg56pl01e";
 
     //below are for my testing
-    private String poolID = "ap-south-1_QH4eTqj9H";
-    private String clientID = "5eh3eqrpno850pk6pb4nivp5jb";
+    private String poolID = "ap-southeast-1_pvNwjnSsMH";
+    private String clientID = "jtsdevuser01webclient";
     private String clientSecret = "1b2vj7roij0t9ft8kqkt0nn1hli0jso83qch49no3l2s02mnhtmr";
 
     private Regions awsRegion = Regions.AP_SOUTH_1;         // Place your Region
@@ -96,7 +96,7 @@ public class Cognito {
             // User was successfully confirmed
             Toast.makeText(appContext,"User Confirmed", Toast.LENGTH_LONG).show();
             Log.d(TAG, "Sign-up confirmed: "  );
-            Intent intent=new Intent(appContext,UserConfirmationActivity.class);
+            Intent intent=new Intent(appContext,LoginActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             appContext.startActivity(intent);
         }

@@ -1,0 +1,246 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--
+        Base application theme, dependent on API level. This theme is replaced
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+    -->
+    <style name="AppBaseTheme" parent="android:Theme.Light">
+        <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        -->
+    </style>
+
+    <!-- Application theme. -->
+    <style name="AppTheme" parent="AppBaseTheme">
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    </style>
+
+    <!-- the theme applied to the application or activity -->
+    <style name="CustomActionBarTheme"
+        parent="@android:style/Theme.Holo.Light">
+
+
+        <item name="android:actionBarStyle">@style/MyActionBar</item>
+
+    </style>
+    <style name="normaltheme" parent="@android:style/Theme.Holo.Light">
+    <item name="android:textColor">#5e5e5e</item>
+    <item name="android:textSize">25sp</item>
+    <item name="android:textStyle">bold</item>
+    </style>
+    <!-- ActionBar styles -->
+    <style name="MyActionBar"
+        parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+
+        <item name="android:backgroundStacked">#1976d2</item>
+        <item name="android:backgroundSplit">#1976d2</item>
+        <item name="android:background">#1976d2</item>
+        <item name="android:logo">@android:color/transparent</item>
+
+        <item name="android:titleTextStyle">@style/MyActionBarTitleText</item>
+
+    </style>
+
+    <style name="MyActionBarTitleText" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
+        <item name="android:textColor">#FFFFFF</item>
+
+    </style>
+    <style name="Actionfooter">
+
+        <item name="android:background">#1795A4</item>
+    </style>
+
+
+    <style name="frmbackgroud" >
+
+        <item name="android:background">#1695A3</item>
+
+    </style>
+
+    <style name="TxtBlackFont" parent="@android:style/TextAppearance.Medium" >
+
+        <item name="android:textColor">#3f3f3f</item>
+        <item name="android:textSize">10sp</item>
+        <item name="android:textStyle">bold</item>
+
+    </style>
+    <style name="TxtTitleFont" parent="@android:style/TextAppearance.Medium" >
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">#9A2EFE</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+        <!-- <item name="android:background">#FFFFFF</item> -->
+    </style>
+
+    <style name="lineargreyout">
+        <item name="android:background">@drawable/lrly_login_round_corners</item>
+    </style>
+    <style name="hzlistlrleyout">
+        <item name="android:background">@drawable/lrly_hz_round_corners</item>
+    </style>
+    <style name="linear_login_fb">
+        <item name="android:background">@drawable/lrly_login_fb_round_corners</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
+    </style>
+    <style name="linear_login_google">
+        <item name="android:background">@drawable/lrly_login_google_round_corners</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
+    </style>
+
+    <style name="txt_login_white">
+        <item name="android:textColor">#E9F7DE</item>
+
+    </style>
+
+    <style name="btnregister">
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:background">@drawable/btn_round_corners</item>
+
+    </style>
+
+    <style name="btnspecifications">
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:background">#DA4835</item>
+
+    </style>
+    <style name="btnproductdetails">
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:background">#225378</item>
+    </style>
+
+    <style name="btnlogin">
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:layout_marginRight">10dp</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:background">@drawable/btn_login_round_corners</item>
+    </style>
+    <style name="btncancel">
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textStyle">bold</item>
+
+        <item name="android:layout_marginRight">10dp</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:background">@drawable/btn_submit_round_corners</item>
+    </style>
+    <style name="editTextskin">
+        <item name="android:layout_marginRight">20dp</item>
+        <item name="android:layout_marginLeft">20dp</item>
+
+
+    </style>
+    <style name="textview_Title_Skin">
+        <item name="android:layout_marginRight">20dp</item>
+        <item name="android:layout_marginLeft">20dp</item>
+        <item name="android:textSize">20dp</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">#3F51B5</item>
+
+    </style>
+    <style name="btnsubmit">
+        <item name="android:textColor">#FFFFFF</item>
+
+        <item name="android:background">@drawable/btn_cancel_round_corners</item>
+    </style>
+
+
+    <style name= "btnfbfnt" >
+        <item name="android:background">@drawable/btn_fb_round_corners</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textStyle">bold</item>
+
+    </style>
+
+    <style name= "Btngooglefnt" >
+        <item name="android:background">@drawable/btn_gogl_round_corners</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="transparent">
+        <item name ="android:windowBackground">@android:color/transparent</item>
+    </style>
+
+    <style name="txt_grey_rounded_corners">
+        <item name="android:background">@drawable/txtv_round_corners</item>
+        <item name="android:paddingTop">3dp</item>
+        <item name="android:paddingBottom">3dp</item>
+        <item name="android:paddingLeft">5dp</item>
+    </style>
+
+    <style name="txt_black_rounded_corner">
+        <item name="android:background">@drawable/txtv_blkround_corners</item>
+
+        <item name="android:paddingTop">3dp</item>
+        <item name="android:paddingBottom">3dp</item>
+        <item name="android:paddingLeft">5dp</item>
+    </style>
+
+    <style name="txt_black_rounded_corners">
+        <item name="android:background">@drawable/txtv_black_round_corners</item>
+        <item name="android:paddingTop">3dp</item>
+        <item name="android:paddingBottom">3dp</item>
+        <item name="android:paddingLeft">5dp</item>
+    </style>
+
+    <style name="Txtview_title" parent="@android:style/TextAppearance.Medium" >
+
+        <item name="android:textColor">#5e5e5e</item>
+        <item name="android:textSize">25sp</item>
+        <item name="android:textStyle">bold</item>
+
+    </style>
+
+    <style name="tv_bold_title" parent="@android:style/TextAppearance.Medium" >
+
+        <item name="android:textColor">#212121</item>
+        <item name="android:textSize">13dp</item>
+        <item name="android:textStyle">bold</item>
+
+    </style>
+    <style name="tv_bold_title2" parent="@android:style/TextAppearance.Medium" >
+
+        <item name="android:textColor">#515151</item>
+        <item name="android:textSize">13dp</item>
+        <item name="android:textStyle">bold</item>
+
+    </style>
+    <style name="Txtview_db_list_title" parent="@android:style/TextAppearance.Medium" >
+
+        <item name="android:textColor">#0078b7</item>
+        <item name="android:textSize">20sp</item>
+
+
+    </style>
+
+    <style name="Txtview_price_list_title" >
+
+        <item name="android:textColor">#1795A4</item>
+
+    </style>
+
+
+    <style name="CustomProgressBar" parent="android:Widget.ProgressBar.Horizontal">
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:progressDrawable">@drawable/custom_loading</item>
+        <item name="android:minHeight">10dip</item>
+        <item name="android:maxHeight">20dip</item>
+    </style>
+    <style name="txtwhtfnt">
+        <item name="android:textColor">#F3FFE2</item>
+
+    </style>
+
+
+</resources>

@@ -3,10 +3,11 @@ package sk.com.j2sky;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.widget.Button;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
     Button signup_button;
 
     @Override
