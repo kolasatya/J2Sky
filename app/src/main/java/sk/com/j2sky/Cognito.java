@@ -35,11 +35,11 @@ public class Cognito {
     //private String clientSecret = "7s4234t8hmp27gtig2f54nn138rv28htmc0gu6c31nlg56pl01e";
 
     //below are for my testing
-    private String poolID = "ap-southeast-1_pvNwjnSsMH";
-    private String clientID = "jtsdevuser01webclient";
-    private String clientSecret = "1b2vj7roij0t9ft8kqkt0nn1hli0jso83qch49no3l2s02mnhtmr";
+    private String poolID = "ap-southeast-1_pvNwjnSsM";
+    private String clientID = "5edtej4pbh6rs2194s5b0kjvdc";
+    private String clientSecret = "v2umf2cr6ij4af1fhpd68iqk44md90s2ljsmuuj02jjh7pnuqnq";
 
-    private Regions awsRegion = Regions.AP_SOUTH_1;         // Place your Region
+    private Regions awsRegion = Regions.AP_SOUTHEAST_1;         // Place your Region
     // ############################################################# End of Information about Cognito Pool
     private CognitoUserPool userPool;
     private CognitoUserAttributes userAttributes;       // Used for adding attributes to the user
@@ -94,11 +94,10 @@ public class Cognito {
         @Override
         public void onSuccess() {
             // User was successfully confirmed
+            SignupActivity.SuccessCallback(appContext);
             Toast.makeText(appContext,"User Confirmed", Toast.LENGTH_LONG).show();
             Log.d(TAG, "Sign-up confirmed: "  );
-            Intent intent=new Intent(appContext,LoginActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            appContext.startActivity(intent);
+
         }
 
         @Override
@@ -167,7 +166,7 @@ public class Cognito {
                 String value = attributes.get(name).toString();
                 Log.d(TAG, key+"user attributes: "+value);
             }
-
+            PasswordActivity.successCallback(appContext);
         }
 
         @Override

@@ -20,12 +20,14 @@ public class LoginActivity extends Activity {
         email_ediEditText=findViewById(R.id.email_editText);
         login_button.setOnClickListener(view -> {
             String email=email_ediEditText.getText().toString();
-            if(email.equalsIgnoreCase("satyakola777@gmail.com")){
+            if(email.equalsIgnoreCase("nagasatya777@gmail.com")){
                 Intent i=new Intent(LoginActivity.this, PasswordActivity.class);
+                i.putExtra("useremail",email);
                 startActivity(i);
             }else
             {
                 Intent i=new Intent(LoginActivity.this, SignupActivity.class);
+                i.putExtra("useremail",email);
                 startActivity(i);
             }
 

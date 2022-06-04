@@ -28,20 +28,9 @@
             android:ems="10"
             android:hint="name"
             android:inputType="textPersonName"
-
-            android:text="satyakola777@gmail.com" />
-
-        <EditText
-            android:id="@+id/editText_sur_Name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:ems="10"
-            android:hint="surname"
-            android:inputType="textPersonName"
             />
+
+
 
         <EditText
             android:id="@+id/editText_gender"
@@ -52,6 +41,7 @@
             android:layout_marginRight="10dp"
             android:ems="10"
             android:hint="gender"
+            android:text="male"
             android:inputType="textPersonName"
             />
 
@@ -64,6 +54,7 @@
             android:layout_marginRight="10dp"
             android:ems="10"
             android:hint="dateofbirth"
+            android:text="17/04/1987"
             android:inputType="textPersonName"
             />
 
@@ -89,19 +80,9 @@
             android:ems="10"
             android:hint="email"
             android:inputType="textEmailAddress"
-            android:text="satyakola777@gmail.com" />
+             />
 
-        <EditText
-            android:id="@+id/editText_place"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:ems="10"
-            android:hint="birthplace"
-            android:inputType="textPersonName"
-            />
+
         <EditText
             android:id="@+id/editText_password"
             android:layout_width="match_parent"
