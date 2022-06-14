@@ -18,7 +18,7 @@ public class SplashActivity extends Activity {
 
                 try {
                     //sleep thread for 10 seconds
-                    sleep(1000);
+                    sleep(10000);
                     //Call Main activity
                     Intent i=new Intent(SplashActivity.this, LoginActivity.class);
                     startActivity(i);

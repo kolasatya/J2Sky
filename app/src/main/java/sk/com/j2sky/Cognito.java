@@ -1,7 +1,6 @@
 package sk.com.j2sky;
 
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -12,15 +11,21 @@ import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserCodeDel
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserDetails;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserPool;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserSession;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserSettings;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.AuthenticationContinuation;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.AuthenticationDetails;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.ChallengeContinuation;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.MultiFactorAuthenticationContinuation;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.exceptions.CognitoNotAuthorizedException;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.AuthenticationHandler;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.GenericHandler;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.GetDetailsHandler;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.SignUpHandler;
 import com.amazonaws.regions.Regions;
+import com.amazonaws.services.cognitoidentityprovider.model.AnalyticsMetadataType;
+import com.amazonaws.services.cognitoidentityprovider.model.ChangePasswordRequest;
+import com.amazonaws.services.cognitoidentityprovider.model.ForgotPasswordRequest;
+import com.amazonaws.services.cognitoidentityprovider.model.ForgotPasswordResult;
 
 import java.util.Map;
 
@@ -38,22 +43,54 @@ public class Cognito {
     private String poolID = "ap-southeast-1_pvNwjnSsM";
     private String clientID = "5edtej4pbh6rs2194s5b0kjvdc";
     private String clientSecret = "v2umf2cr6ij4af1fhpd68iqk44md90s2ljsmuuj02jjh7pnuqnq";
-
+    public CognitoUser cognitoUser;
+    public CognitoUserSession cognitoUserSession;
+    CognitoUserDetails cognitoUserDetails;
     private Regions awsRegion = Regions.AP_SOUTHEAST_1;         // Place your Region
     // ############################################################# End of Information about Cognito Pool
     private CognitoUserPool userPool;
     private CognitoUserAttributes userAttributes;       // Used for adding attributes to the user
     private Context appContext;
-    private String userPassword;                        // Used for Login
-    public Cognito(Context context){
+    private String userPassword;
+    public static Cognito cognito=null;
+    public static String access_token="";
+    // Used for Login
+    private Cognito(Context context){
         appContext = context;
         userPool = new CognitoUserPool(context, this.poolID, this.clientID, this.clientSecret, this.awsRegion);
         userAttributes = new CognitoUserAttributes();
+    }
+
+    public static Cognito getCognito(Context context)
+    {
+        if(cognito==null)
+        {
+            cognito=new Cognito(context);
+        }
+        return cognito;
     }
     public void signUpInBackground(String userId, String password){
         userPool.signUpInBackground(userId, password, this.userAttributes, null, signUpCallback);
         //userPool.signUp(userId, password, this.userAttributes, null, signUpCallback);
     }
+
+    public void changePassword(String oldUserPassword, String newUserPassword,
+                                        GenericHandler handler ) {
+
+
+            final ChangePasswordRequest changePasswordRequest = new ChangePasswordRequest();
+            changePasswordRequest.setPreviousPassword(oldUserPassword);
+            changePasswordRequest.setProposedPassword(newUserPassword);
+            changePasswordRequest.setAccessToken(access_token);
+            Log.d("user-changepwd", "Sign-up success"+access_token);
+            Log.d("user-changepwd", "Sign-up success"+userPool);
+
+        cognitoUser.changePassword(oldUserPassword,newUserPassword,handler);
+
+
+    }
+
+
     SignUpHandler signUpCallback = new SignUpHandler() {
         @Override
         public void onSuccess(CognitoUser cognitoUser, boolean userConfirmed, CognitoUserCodeDeliveryDetails cognitoUserCodeDeliveryDetails) {
@@ -95,6 +132,7 @@ public class Cognito {
         public void onSuccess() {
             // User was successfully confirmed
             SignupActivity.SuccessCallback(appContext);
+
             Toast.makeText(appContext,"User Confirmed", Toast.LENGTH_LONG).show();
             Log.d(TAG, "Sign-up confirmed: "  );
 
@@ -111,7 +149,8 @@ public class Cognito {
         userAttributes.addAttribute(key, value);
     }
     public void userLogin(String userId, String password){
-        CognitoUser cognitoUser =  userPool.getUser(userId);
+        //cognitoUser=cognitoUser;
+        cognitoUser =  userPool.getUser(userId);
         this.userPassword = password;
         Log.d("userLogin","userId:"+userId +"password:"+password);
         cognitoUser.getSessionInBackground(authenticationHandler);
@@ -129,7 +168,11 @@ public class Cognito {
             Toast.makeText(appContext,"Sign in success", Toast.LENGTH_LONG).show();
             Log.d(TAG, "Sign-up onSuccess: " + userSession.getUsername()+userSession.getAccessToken().getJWTToken());
             Log.d(TAG, "Sign-up onSuccess: " + userSession.getUsername()+userSession.getIdToken().getJWTToken());
-            Log.d(TAG, "Sign-up onSuccess: ");
+            access_token=userSession.getAccessToken().getJWTToken();
+            Log.d(TAG, "Sign-up onSuccess: "+userSession.getIdToken().getExpiration());
+            Log.d(TAG, "Sign-up onSuccess: "+userSession);
+            userSession=userSession;
+            PasswordActivity.successCallback(appContext);
         }
         @Override
         public void getAuthenticationDetails(AuthenticationContinuation authenticationContinuation, String userId) {
@@ -158,6 +201,7 @@ public class Cognito {
         @Override
         public void onSuccess(CognitoUserDetails cognitoUserDetails) {
             // The user detail are in cognitoUserDetails
+            cognitoUserDetails=cognitoUserDetails;
           Map<String,String> attributes= cognitoUserDetails.getAttributes().getAttributes();
 
 
@@ -166,12 +210,14 @@ public class Cognito {
                 String value = attributes.get(name).toString();
                 Log.d(TAG, key+"user attributes: "+value);
             }
-            PasswordActivity.successCallback(appContext);
+
         }
 
         @Override
         public void onFailure(Exception exception) {
             // Fetch user details failed, check exception for the cause
+            Log.d(TAG, "Sign-up indetails handler failed: "+exception);
+            exception.printStackTrace();
         }
     };
 

@@ -14,4 +14,11 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:text="Welcome To App" />
+
+    <Button
+        android:id="@+id/changepwd_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textView3"
+        android:text="Change Password" />
 </RelativeLayout>

@@ -3,7 +3,9 @@ package sk.com.j2sky;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,7 +14,8 @@ import android.widget.Button;
 import android.widget.EditText;
 
 public class SignupActivity extends Activity {
-    Context context;
+    static Context context;
+    static SignupActivity signupActivity;
     Button register_button,cancel_button,otp_button;
     EditText editText_otp,editText_password,editText_re_password,editText_surname,editText_dob,editText_place,editText_name,editText_email,editText_phonenumber,editText_gender;
     static String email="";
@@ -22,6 +25,7 @@ public class SignupActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
         context=getApplicationContext();
+        signupActivity=this;
         Bundle bundle = getIntent().getExtras();
 
         if (bundle != null) {
@@ -54,7 +58,7 @@ public class SignupActivity extends Activity {
             public void onClick(View v) {
                 // Do something in response to button click
 
-                Cognito cognito =new Cognito(getApplicationContext());
+                Cognito cognito =Cognito.getCognito(getApplicationContext());
                 cognito.addAttribute("birthdate",editText_dob.getText().toString());//birthdate
                 cognito.addAttribute("email",email);//email
                 cognito.addAttribute("gender",editText_gender.getText().toString());//gender
@@ -86,7 +90,7 @@ public class SignupActivity extends Activity {
         register_button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Do something in response to button click
-                Cognito cognito =new Cognito(getApplicationContext());
+                Cognito cognito =Cognito.getCognito(getApplicationContext());
                 cognito.confirmUser(editText_email.getText().toString(),editText_otp.getText().toString());
             }
         });
@@ -108,9 +112,27 @@ public class SignupActivity extends Activity {
 
     public static void SuccessCallback(Context appContext)
     {
-        Intent intent=new Intent(appContext,PasswordActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra("useremail",email);
-        appContext.startActivity(intent);
+        ShowAlert();
+
     }
+    private static void ShowAlert()
+    {
+        AlertDialog.Builder builder  = new AlertDialog.Builder(signupActivity);
+        builder.setMessage("You Have Successfully Registered.Please login.");
+        builder.setTitle("SignUp");
+        builder.setCancelable(false);
+        builder.setPositiveButton("Yes",new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog,int which)
+                {
+                    Intent intent=new Intent(signupActivity,PasswordActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.putExtra("useremail",email);
+                    context.startActivity(intent);
+                }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
 }
