@@ -15,9 +15,11 @@ import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserSetting
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.AuthenticationContinuation;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.AuthenticationDetails;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.ChallengeContinuation;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.ForgotPasswordContinuation;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.MultiFactorAuthenticationContinuation;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.exceptions.CognitoNotAuthorizedException;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.AuthenticationHandler;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.ForgotPasswordHandler;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.GenericHandler;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.GetDetailsHandler;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.SignUpHandler;
@@ -45,19 +47,20 @@ public class Cognito {
     private String clientSecret = "v2umf2cr6ij4af1fhpd68iqk44md90s2ljsmuuj02jjh7pnuqnq";
     public CognitoUser cognitoUser;
     public CognitoUserSession cognitoUserSession;
-    CognitoUserDetails cognitoUserDetails;
+    public CognitoUserDetails cognitoUserDetails;
     private Regions awsRegion = Regions.AP_SOUTHEAST_1;         // Place your Region
     // ############################################################# End of Information about Cognito Pool
-    private CognitoUserPool userPool;
+    private CognitoUserPool cognitoUserPool;
     private CognitoUserAttributes userAttributes;       // Used for adding attributes to the user
     private Context appContext;
     private String userPassword;
     public static Cognito cognito=null;
     public static String access_token="";
+
     // Used for Login
     private Cognito(Context context){
         appContext = context;
-        userPool = new CognitoUserPool(context, this.poolID, this.clientID, this.clientSecret, this.awsRegion);
+        cognitoUserPool = new CognitoUserPool(context, this.poolID, this.clientID, this.clientSecret, this.awsRegion);
         userAttributes = new CognitoUserAttributes();
     }
 
@@ -70,7 +73,7 @@ public class Cognito {
         return cognito;
     }
     public void signUpInBackground(String userId, String password){
-        userPool.signUpInBackground(userId, password, this.userAttributes, null, signUpCallback);
+        cognitoUserPool.signUpInBackground(userId, password, this.userAttributes, null, signUpCallback);
         //userPool.signUp(userId, password, this.userAttributes, null, signUpCallback);
     }
 
@@ -82,8 +85,8 @@ public class Cognito {
             changePasswordRequest.setPreviousPassword(oldUserPassword);
             changePasswordRequest.setProposedPassword(newUserPassword);
             changePasswordRequest.setAccessToken(access_token);
-            Log.d("user-changepwd", "Sign-up success"+access_token);
-            Log.d("user-changepwd", "Sign-up success"+userPool);
+            Log.d("user-change pwd", "Sign-up success"+access_token);
+            Log.d("user-change pwd", "Sign-up success"+cognitoUserPool);
 
         cognitoUser.changePassword(oldUserPassword,newUserPassword,handler);
 
@@ -121,7 +124,7 @@ public class Cognito {
         }
     };
     public void confirmUser(String userId, String code){
-        CognitoUser cognitoUser =  userPool.getUser(userId);
+        CognitoUser cognitoUser =  cognitoUserPool.getUser(userId);
         cognitoUser.confirmSignUpInBackground(code,false, confirmationCallback);
         //cognitoUser.confirmSignUp(code,false, confirmationCallback);
     }
@@ -150,7 +153,7 @@ public class Cognito {
     }
     public void userLogin(String userId, String password){
         //cognitoUser=cognitoUser;
-        cognitoUser =  userPool.getUser(userId);
+        cognitoUser =  cognitoUserPool.getUser(userId);
         this.userPassword = password;
         Log.d("userLogin","userId:"+userId +"password:"+password);
         cognitoUser.getSessionInBackground(authenticationHandler);
@@ -161,16 +164,16 @@ public class Cognito {
     AuthenticationHandler authenticationHandler = new AuthenticationHandler() {
         @Override
         public void authenticationChallenge(ChallengeContinuation continuation) {
-            Log.d(TAG, "Sign-up failed: " + continuation.getParameters());
+            Log.d(TAG, "Login authenticationChallenge: " + continuation.getParameters());
         }
         @Override
         public void onSuccess(CognitoUserSession userSession, CognitoDevice newDevice) {
             Toast.makeText(appContext,"Sign in success", Toast.LENGTH_LONG).show();
-            Log.d(TAG, "Sign-up onSuccess: " + userSession.getUsername()+userSession.getAccessToken().getJWTToken());
-            Log.d(TAG, "Sign-up onSuccess: " + userSession.getUsername()+userSession.getIdToken().getJWTToken());
+            Log.d(TAG, "Login- onSuccess: " + userSession.getUsername()+userSession.getAccessToken().getJWTToken());
+            Log.d(TAG, "Login- onSuccess: " + userSession.getUsername()+userSession.getIdToken().getJWTToken());
             access_token=userSession.getAccessToken().getJWTToken();
-            Log.d(TAG, "Sign-up onSuccess: "+userSession.getIdToken().getExpiration());
-            Log.d(TAG, "Sign-up onSuccess: "+userSession);
+            Log.d(TAG, "Login- onSuccess: "+userSession.getIdToken().getExpiration());
+            Log.d(TAG, "Login- onSuccess: "+userSession);
             userSession=userSession;
             PasswordActivity.successCallback(appContext);
         }
@@ -182,6 +185,7 @@ public class Cognito {
             authenticationContinuation.setAuthenticationDetails(authenticationDetails);
             // Allow the sign-in to continue
             authenticationContinuation.continueTask();
+            Log.d(TAG, "Login- onSuccess:getAuthenticationDetails ");
         }
         @Override
         public void getMFACode(MultiFactorAuthenticationContinuation multiFactorAuthenticationContinuation) {
@@ -189,10 +193,18 @@ public class Cognito {
             //multiFactorAuthenticationContinuation.setMfaCode(mfaVerificationCode);
             // Allow the sign-in process to continue
             //multiFactorAuthenticationContinuation.continueTask();
+          //  multiFactorAuthenticationContinuation.
+            Log.d(TAG, "Login- onSuccess: getMFACode");
         }
         @Override
         public void onFailure(Exception exception) {
             // Sign-in failed, check exception for the cause
+            exception.printStackTrace();
+            Log.d(TAG, "Login- onFailure: "+exception.getMessage());
+            if(exception.getMessage().contains("Incorrect username or password"))
+            {
+                PasswordActivity.failureCallback();
+            }
             Toast.makeText(appContext,"Sign in Failure", Toast.LENGTH_LONG).show();
         }
     };
@@ -216,9 +228,15 @@ public class Cognito {
         @Override
         public void onFailure(Exception exception) {
             // Fetch user details failed, check exception for the cause
-            Log.d(TAG, "Sign-up indetails handler failed: "+exception);
+            Log.d(TAG, "Sign-up in details handler failed: "+exception);
             exception.printStackTrace();
         }
     };
+
+    public void forgotPassword(String email, ForgotPasswordHandler forgotPasswordHandler) {
+        cognitoUserPool.getUser(email).forgotPasswordInBackground(forgotPasswordHandler);
+
+
+    }
 
 }

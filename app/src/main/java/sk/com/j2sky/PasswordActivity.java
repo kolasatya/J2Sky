@@ -1,6 +1,6 @@
 package sk.com.j2sky;
 
-import androidx.appcompat.app.AppCompatActivity;
+
 
 import android.app.Activity;
 import android.content.Context;
@@ -14,8 +14,9 @@ public class PasswordActivity extends Activity {
 
     Button login_button;
     TextView forgot_pwd_bth;
-    EditText password_ediEditText;
+    static EditText password_ediEditText;
     static String email="";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,8 +29,9 @@ public class PasswordActivity extends Activity {
         login_button=(Button) findViewById(R.id.login_button2);
         forgot_pwd_bth=(TextView) findViewById(R.id.button_forgotpwd);
         forgot_pwd_bth.setOnClickListener(view -> {
-
-
+            Intent i = new Intent(PasswordActivity.this, ResetPasswordActivity.class);
+            i.putExtra("useremail", email);
+            startActivity(i);
         });
         password_ediEditText=findViewById(R.id.password_editText);
         login_button.setOnClickListener(view -> {
@@ -44,5 +46,9 @@ public static void successCallback(Context context) {
     i.putExtra("useremail", email);
     i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     context.startActivity(i);
+}
+public static void failureCallback()
+{
+    password_ediEditText.setError("Invalid user/password");
 }
 }
